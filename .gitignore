@@ -22,6 +22,7 @@ __pycache__
 *~
 *.bak
 .ipynb_checkpoints
+.ipynb_checkpoints
 .ipython
 .local
 .tox
