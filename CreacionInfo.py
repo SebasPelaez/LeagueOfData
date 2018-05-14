@@ -4,6 +4,7 @@ import pandas as pd
 
 from InfoExtract import ExtractData
 from ExtractLPL import ExtractLeague
+from GameCount import addGameCount
 
 data_columns = ['matches_played','percentage_blue_win','percentage_red_win',
                 'mean_blue_win_time','mean_red_win_time','mean_win_time',
@@ -16,6 +17,9 @@ data_columns = ['matches_played','percentage_blue_win','percentage_red_win',
 
 full_data = pd.read_csv('./data/OraclesElixir/FullData.csv')
 
+#Enumerar los partidos
+full_data = addGameCount(full_data)    
+    
 #Se extrae los datos de la liga china porque hacen falta muchos valores
 extract_data = ExtractLeague(full_data)
 
