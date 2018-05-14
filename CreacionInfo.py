@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from InfoExtract import ExtractData
+from ExtractLPL import ExtractLeague
 
 data_columns = ['matches_played','percentage_blue_win','percentage_red_win',
                 'mean_blue_win_time','mean_red_win_time','mean_win_time',
@@ -14,12 +15,32 @@ data_columns = ['matches_played','percentage_blue_win','percentage_red_win',
                 'mean_golddiff_at15','mean_experience_at10','mean_wards','mean_wards_kill','mean_creeps_kill']
 
 full_data = pd.read_csv('./data/OraclesElixir/FullData.csv')
-teams = pd.DataFrame(columns = data_columns)
 
-team_a = full_data[full_data['team']=='SK Telecom T1']
+#Se extrae los datos de la liga china porque hacen falta muchos valores
+extract_data = ExtractLeague(full_data)
 
-k = 0
-for i in range(5,len(team_a)):
-    data = ExtractData(team_a.iloc[0:i,:])
-    teams.loc[k] = data
-    k = k + 1
+full_results = []
+teams = np.unique(extract_data['team'])
+
+#Se sacan todas las caracteristicas de los equipos
+for j in teams:
+    team_data = extract_data[extract_data['team']==j]
+    if (len(team_data) >= 5):
+        k = 0
+        teams_df = pd.DataFrame(columns = data_columns)
+        for i in range(5,len(team_data)):
+            data = ExtractData(team_data.iloc[0:i,:])
+            teams_df.loc[k] = data
+            k = k + 1
+        full_results.append(teams_df)
+    
+#Preparar los cocientes
+# 1) Verificar que existan los dos equipos
+for i in range(0,1,2):
+    team_b = full_data.loc[i]['team']
+    team_r = full_data.loc[i+1]['team']
+    if(np.isin(team_b,teams) and  np.isin(team_r,teams)):
+        print("Entre")
+    else:
+        print("No existe alguno de loso equipos")
+    

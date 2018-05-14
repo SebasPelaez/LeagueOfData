@@ -40,11 +40,17 @@ def ExtractData(team):
     #Promedio tiempo de victoria
     side = team[team['side']=='Blue']
     mean_win = side[side['result']==1]
-    mean_blue_win_time = np.mean(mean_win['gamelength'])
+    if(len(mean_win) == 0):
+        mean_blue_win_time = 50
+    else:
+        mean_blue_win_time = np.mean(mean_win['gamelength'])
     
     side = team[team['side']=='Red']
     mean_win = side[side['result']==1]
-    mean_red_win_time = np.mean(mean_win['gamelength'])
+    if(len(mean_win) == 0):
+        mean_red_win_time = 50
+    else:
+        mean_red_win_time = np.mean(mean_win['gamelength'])    
     
     mean_win_time = (mean_blue_win_time + mean_red_win_time)/2
     
@@ -90,7 +96,7 @@ def ExtractData(team):
     mean_herald_time = np.mean(np.asarray(herald['heraldtime'].dropna(how='any'), dtype=float)) 
     
     #BARONES
-    fbaron = np.asarray(team['fbaron'], dtype=int)
+    fbaron = np.asarray(team['fbaron'], dtype=float)
     percentage_fbaron = (np.sum(fbaron) * 100)/matches_played
     
     fbaron = team[team['fbaron']==1]
