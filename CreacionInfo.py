@@ -5,6 +5,7 @@ import pandas as pd
 from InfoExtract import ExtractData
 from ExtractLPL import ExtractLeague
 from GameCount import addGameCount
+from MakeQuotient import Quotient
 
 data_columns = ['matches_played','percentage_blue_win','percentage_red_win',
                 'mean_blue_win_time','mean_red_win_time','mean_win_time',
@@ -13,7 +14,8 @@ data_columns = ['matches_played','percentage_blue_win','percentage_red_win',
                 'mean_total_towers','percentage_fthreetowers','percentage_fdragon','mean_fdragon_time',
                 'mean_dragons','percentage_herald','mean_herald_time','mean_barons',
                 'mean_fbaron_time','percentage_fbaron','mean_totalgold','mean_golddiff_at10',
-                'mean_golddiff_at15','mean_experience_at10','mean_wards','mean_wards_kill','mean_creeps_kill']
+                'mean_golddiff_at15','mean_experience_at10','mean_wards','mean_wards_kill','mean_creeps_kill',
+                'results']
 
 full_data = pd.read_csv('./data/OraclesElixir/FullData.csv')
 
@@ -37,14 +39,9 @@ for j in teams:
             teams_df.loc[k] = data
             k = k + 1
         full_results.append(teams_df)
+    else:
+        full_results.append([])
     
 #Preparar los cocientes
-# 1) Verificar que existan los dos equipos
-for i in range(0,1,2):
-    team_b = full_data.loc[i]['team']
-    team_r = full_data.loc[i+1]['team']
-    if(np.isin(team_b,teams) and  np.isin(team_r,teams)):
-        print("Entre")
-    else:
-        print("No existe alguno de loso equipos")
+cocientes = Quotient(full_data,teams,full_results,data_columns)
     

@@ -20,7 +20,7 @@ def ExtractData(team):
     else:
         wins = counts_elements[1]
         lose = counts_elements[0]
-    percentage_blue_win = "{0:.2f}".format((wins / (wins + lose)) * 100)
+    percentage_blue_win = float("{0:.2f}".format((wins / (wins + lose)) * 100))
 
     #Porcentaje victorias lado Rojo
     red_side = team[team['side']=='Red']
@@ -35,7 +35,7 @@ def ExtractData(team):
     else:
         wins = counts_elements[1]
         lose = counts_elements[0]
-    percentage_red_win = "{0:.2f}".format((wins / (wins + lose)) * 100)
+    percentage_red_win = float("{0:.2f}".format((wins / (wins + lose)) * 100))
     
     #Promedio tiempo de victoria
     side = team[team['side']=='Blue']
@@ -94,7 +94,9 @@ def ExtractData(team):
     
     herald = team[team['herald']==1]
     mean_herald_time = np.mean(np.asarray(herald['heraldtime'].dropna(how='any'), dtype=float)) 
-    
+    if(percentage_herald == 0):
+        mean_herald_time = 20
+        
     #BARONES
     fbaron = np.asarray(team['fbaron'], dtype=float)
     percentage_fbaron = (np.sum(fbaron) * 100)/matches_played
@@ -119,6 +121,8 @@ def ExtractData(team):
     #MINIONS AND NEUTRAL MOSTERS
     mean_creeps_kill = np.mean((team['minionkills']+team['monsterkills'])/ team['gamelength'])
     
+    #El resultado siempre lo seteo como -1
+    result = -1
     
     data.append(matches_played)
     data.append(percentage_blue_win)
@@ -152,5 +156,6 @@ def ExtractData(team):
     data.append(mean_wards)
     data.append(mean_wards_kill)
     data.append(mean_creeps_kill)
+    data.append(result)
     
     return data
