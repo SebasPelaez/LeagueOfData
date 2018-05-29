@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 
 from InfoExtract import ExtractData
@@ -17,13 +16,13 @@ data_columns = ['matches_played','percentage_blue_win','percentage_red_win',
                 'mean_golddiff_at15','mean_experience_at10','mean_wards','mean_wards_kill','mean_creeps_kill',
                 'results']
 
-full_data = pd.read_csv('./data/OraclesElixir/FullData.csv')
-
-#Enumerar los partidos
-full_data = addGameCount(full_data)    
+full_data = pd.read_csv('./data/OraclesElixir/FullData.csv')   
     
 #Se extrae los datos de la liga china porque hacen falta muchos valores
 extract_data = ExtractLeague(full_data)
+
+#Enumerar los partidos
+extract_data = addGameCount(extract_data) 
 
 full_results = []
 teams = np.unique(extract_data['team'])
@@ -43,5 +42,4 @@ for j in teams:
         full_results.append([])
     
 #Preparar los cocientes
-cocientes = Quotient(full_data,teams,full_results,data_columns)
-    
+cocientes = Quotient(extract_data,teams,full_results,data_columns)    

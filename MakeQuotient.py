@@ -4,11 +4,16 @@ import pandas as pd
 def Quotient(full_data,teams,full_results,data_columns):
     quotients = pd.DataFrame(columns = data_columns)
     k = 0
-    for i in range(0,1000,2):
+    for i in range(0,len(full_data),2):
         team_b = full_data.loc[i]
         team_r = full_data.loc[i+1]
         if(np.isin(team_b['team'],teams) and  np.isin(team_r['team'],teams)):
-            result = 1 if team_b['result'] == 1 else 0
+            if (team_b['result'] == 1):
+                result = 1 
+            else:
+                result = 0
+                
+            #5 Corresponde a las partidas de las que empezamos a contar y 1 más por que no se empieza desde cero
             game_b = team_b['gamecount'] - 5
             game_r = team_r['gamecount'] - 5
             if(game_b  < 1):
@@ -18,17 +23,21 @@ def Quotient(full_data,teams,full_results,data_columns):
             blue_index = np.where(teams[:]==team_b['team'])[0][0]
             red_index = np.where(teams[:]==team_r['team'])[0][0]
             if(blue_index<len(full_results) and red_index<len(full_results)):
-                results_blue = full_results[blue_index].loc[game_b]
-                results_red = full_results[red_index].loc[game_r]
-                cociente = results_blue/results_red
-                cociente['result'] = result
-                FixQuotient(cociente)
-                quotients.loc[k] = cociente
-                k = k + 1
+                if(len(full_results[blue_index])>0 and len(full_results[red_index])>0):
+                    print(i)
+                    results_blue = full_results[blue_index].loc[game_b]
+                    results_red = full_results[red_index].loc[game_r]
+                    cociente = results_blue/results_red
+                    cociente['results'] = result
+                    FixQuotient(cociente)
+                    quotients.loc[k] = cociente
+                    k = k + 1
+                else:
+                    print("No hay partidos que relacionar")
             else:
                 print("Equipo con pocos partidos para ser evaluado")
         else:
-            print("No existe alguno de loso equipos")
+            print("No existe alguno de los dos equipos")
     return quotients
             
 def FixQuotient(cociente):
