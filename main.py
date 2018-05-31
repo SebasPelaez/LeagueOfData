@@ -6,6 +6,8 @@ from DataPreprocessing.ExtractLPL import ExtractLeague
 from DataPreprocessing.GameCount import addGameCount
 from DataPreprocessing.MakeQuotient import Quotient
 
+from Models.RandomForest import RandomForest
+
 data_columns = ['matches_played','percentage_blue_win','percentage_red_win',
                 'mean_blue_win_time','mean_red_win_time','mean_win_time',
                 'mean_kills','mean_deaths','mean_assis','percentage_fb','mean_fb_time',
@@ -43,3 +45,9 @@ for j in teams:
     
 #Build the quotient with the team differences
 quotients = Quotient(extract_data,teams,full_results,data_columns)
+
+# Execute Forecast
+X = quotients.iloc[:,:-1].values
+Y = quotients.iloc[:,-1].values
+
+RandomForest(X,Y)
