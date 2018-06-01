@@ -91,7 +91,6 @@ def ExtractData(team):
     #HERALDOS
     without_nan = team['herald'].dropna(how='any')
     percentage_herald = ((np.sum(without_nan) * 100)/len(without_nan)) if len(without_nan) != 0 else 0
-    percentage_herald = 0
     
     herald = team[team['herald']==1]
     mean_herald_time = np.mean(np.asarray(herald['heraldtime'].dropna(how='any'), dtype=float)) 
