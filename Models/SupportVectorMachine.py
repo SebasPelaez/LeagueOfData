@@ -1,13 +1,12 @@
 import numpy as np
 
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
-def RandomForest(X,Y):
+def SVM(X,Y):
     folds = 100
-    n_trees = 100
     sensibility = []
     specificity = []
     accuracy = []
@@ -20,7 +19,7 @@ def RandomForest(X,Y):
       X_train = sc_X.fit_transform(X_train)
       X_test = sc_X.transform(X_test)
     
-      estimator = RandomForestClassifier(n_estimators=n_trees, criterion='entropy')
+      estimator = SVC(kernel='rbf',C = 0.01, gamma=0.01)
       estimator.fit(X_train, y_train)
           
       # Predecir los resultados de prueba
