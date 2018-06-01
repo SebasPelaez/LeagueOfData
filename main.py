@@ -64,4 +64,4 @@ results = MLP(X,Y)
 results = SVM(X,Y)
 
 Pearson(X,Y)
-k = Fisher(X,Y)
+Fisher(X,Y,data_columns)
