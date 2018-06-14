@@ -1,0 +1,39 @@
+from sklearn.linear_model import LogisticRegression
+from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+
+def Selector(value):
+    estimator = switcher.get(value, "nothing")
+    return estimator
+
+def Regression():
+    estimator = LogisticRegression(solver='saga')
+    return estimator
+
+def MLP():
+    estimator = MLPClassifier(hidden_layer_sizes=(32,10),
+                              activation='logistic',
+                              max_iter= 500)
+    return estimator
+
+def KNN():
+    estimator = KNeighborsClassifier(n_neighbors=10,weights='distance')
+    return estimator
+
+def Forest():
+    estimator = RandomForestClassifier(n_estimators=500, criterion='entropy')
+    return estimator
+
+def SVM():
+    estimator = SVC(kernel='linear',C = 1)
+    return estimator
+
+switcher = {
+        'regression': Regression(),
+        'mlp': MLP(),
+        'knn': KNN(),
+        'forest': Forest(),
+        'svm': SVM()
+        }

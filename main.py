@@ -11,9 +11,10 @@ from Models.KernelDensityEstimator import ParzenWindow
 from Models.NearestNeighbors import KNN
 from Models.MultilayerPerceptron import MLP
 from Models.SupportVectorMachine import SVM
+from Models.LinearRegression import LinearModel
 
-from DimensionalityReduction.FeatureAnalysis import Pearson
-from DimensionalityReduction.FeatureAnalysis import Fisher
+from DimensionalityReduction.FeatureAnalysis import Pearson, Fisher
+from DimensionalityReduction.FeatureSubset import FeatureSelector,FeatureExtraction
 
 data_columns = ['matches_played','percentage_blue_win','percentage_red_win',
                 'mean_blue_win_time','mean_red_win_time','mean_win_time',
@@ -57,11 +58,16 @@ quotients = Quotient(extract_data,teams,full_results,data_columns)
 X = quotients.iloc[:,:-1].values
 Y = quotients.iloc[:,-1].values
 
-results = RandomForest(X,Y)
+results = RandomForest(X,Y,'forest')
 results = ParzenWindow(X,Y)
-results = KNN(X,Y)
-results = MLP(X,Y)
-results = SVM(X,Y)
+results = KNN(X,Y,'knn')
+results = MLP(X,Y,'mlp')
+results = SVM(X,Y,'svm')
+results = LinearModel(X,Y,'regression')
 
+#Feature Analysis
 Pearson(X,Y)
 Fisher(X,Y,data_columns)
+
+X_sel = FeatureSelector(X,Y,'forest')#forest,knn,mlp,svm,regression
+X_ext = FeatureExtraction(X,Y)
