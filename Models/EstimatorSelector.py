@@ -3,6 +3,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
+from xgboost import XGBClassifier
 
 def Selector(value):
     estimator = switcher.get(value, "nothing")
@@ -26,6 +27,10 @@ def Forest():
     estimator = RandomForestClassifier(n_estimators=500, criterion='entropy')
     return estimator
 
+def XGBoost():
+    estimator = XGBClassifier(n_estimators=10,objective='binary:logistic')
+    return estimator
+
 def SVM():
     estimator = SVC(kernel='linear',C = 1)
     return estimator
@@ -35,5 +40,6 @@ switcher = {
         'mlp': MLP(),
         'knn': KNN(),
         'forest': Forest(),
-        'svm': SVM()
+        'svm': SVM(),
+        'xgboost': XGBoost()
         }

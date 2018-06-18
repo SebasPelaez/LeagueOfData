@@ -41,10 +41,10 @@ def Classify(X,Y,estimator):
       roc_auc = auc(fpr, tpr)
       aucs.append(roc_auc)
      
-      sensibility.append(cm[0,0]/(cm[0,0]+cm[1,0]))
-      specificity.append(cm[1,1]/(cm[1,1]+cm[0,1]))
-      accuracy.append((cm[0,0]+cm[1,1])/np.sum(cm))
-      precision.append(cm[0,0]/(cm[0,0]+cm[0,1]))
+      sensibility.append(cm[1,1]/(cm[1,1]+cm[1,0]))
+      specificity.append(cm[0,0]/(cm[0,0]+cm[0,1]))
+      accuracy.append((cm[0,0]+cm[1,1])/np.sum(cm))      
+      precision.append(cm[1,1]/(cm[1,1]+cm[0,1]))
     
     mean_tpr = np.mean(tprs, axis=0)
     mean_tpr[-1] = 1.0

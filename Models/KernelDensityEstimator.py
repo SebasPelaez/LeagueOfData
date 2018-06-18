@@ -10,6 +10,7 @@ def ParzenWindow(X,Y):
     specificity = []
     accuracy = []
     precision = []
+        
     for i in range(0,folds):
         
       X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
@@ -29,12 +30,12 @@ def ParzenWindow(X,Y):
       y_pred = np.argmax(f_total,axis=1)
       
       cm = confusion_matrix(y_test, y_pred)
-      
-      sensibility.append(cm[0,0]/(cm[0,0]+cm[1,0]))
-      specificity.append(cm[1,1]/(cm[1,1]+cm[0,1]))
+           
+      sensibility.append(cm[1,1]/(cm[1,1]+cm[1,0]))
+      specificity.append(cm[0,0]/(cm[0,0]+cm[0,1]))
       accuracy.append((cm[0,0]+cm[1,1])/np.sum(cm))
-      precision.append(cm[0,0]/(cm[0,0]+cm[0,1]))
-                   
+      precision.append(cm[1,1]/(cm[1,1]+cm[0,1]))
+      
     sensibility = '{}+-{}'.format(np.around(np.mean(sensibility),decimals=3),np.around(np.std(sensibility),decimals=3))
     specificity = '{}+-{}'.format(np.around(np.mean(specificity),decimals=3),np.around(np.std(specificity),decimals=3))
     error = 1 - np.around(np.mean(accuracy),decimals=5)

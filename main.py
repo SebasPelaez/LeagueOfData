@@ -12,6 +12,8 @@ from Models.NearestNeighbors import KNN
 from Models.MultilayerPerceptron import MLP
 from Models.SupportVectorMachine import SVM
 from Models.LinearRegression import LinearModel
+from Models.TreeBoosting import TreeBoosting
+from Models.DeepNN import deepNN
 
 from DimensionalityReduction.FeatureAnalysis import Pearson, Fisher
 from DimensionalityReduction.FeatureSubset import FeatureSelector,FeatureExtraction
@@ -64,6 +66,8 @@ results = KNN(X,Y,'knn')
 results = MLP(X,Y,'mlp')
 results = SVM(X,Y,'svm')
 results = LinearModel(X,Y,'regression')
+results = TreeBoosting(X,Y,'xgboost')
+results = deepNN(X,Y)
 
 #Feature Analysis
 Pearson(X,Y)
