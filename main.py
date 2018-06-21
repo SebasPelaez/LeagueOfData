@@ -6,6 +6,8 @@ from DataPreprocessing.ExtractLPL import ExtractLeague
 from DataPreprocessing.GameCount import addGameCount
 from DataPreprocessing.MakeQuotient import Quotient
 
+from VisualizeData.VisualizeQuotients import StochasticNeighborEmbedding,PrincipalComponents
+
 from Models.RandomForest import RandomForest
 from Models.KernelDensityEstimator import ParzenWindow
 from Models.NearestNeighbors import KNN
@@ -60,6 +62,11 @@ quotients = Quotient(extract_data,teams,full_results,data_columns)
 X = quotients.iloc[:,:-1].values
 Y = quotients.iloc[:,-1].values
 
+#Visualize Data
+StochasticNeighborEmbedding(X,Y,3)
+PrincipalComponents(X,Y,3)
+
+# Execute Forecast
 results = RandomForest(X,Y,'forest')
 results = ParzenWindow(X,Y)
 results = KNN(X,Y,'knn')

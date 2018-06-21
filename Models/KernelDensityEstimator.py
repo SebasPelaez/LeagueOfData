@@ -5,14 +5,13 @@ from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 
 def ParzenWindow(X,Y):
-    folds = 10
+    folds = 100
     sensibility = []
     specificity = []
     accuracy = []
     precision = []
         
     for i in range(0,folds):
-        
       X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
       
       ind_win = y_train == 1
@@ -46,7 +45,7 @@ def ParzenWindow(X,Y):
     return results
 
 def estimate(X_train,X_test):
-    width = 10
+    width = 0.1
     estimator = KernelDensity(bandwidth=width,kernel='gaussian', algorithm='ball_tree')
     estimator.fit(X_train)
     # Predecir los resultados de prueba

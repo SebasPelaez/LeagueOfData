@@ -14,17 +14,17 @@ def Regression():
     return estimator
 
 def MLP():
-    estimator = MLPClassifier(hidden_layer_sizes=(32,10),
+    estimator = MLPClassifier(hidden_layer_sizes=(64,60,58),
                               activation='logistic',
                               max_iter= 500)
     return estimator
 
 def KNN():
-    estimator = KNeighborsClassifier(n_neighbors=10,weights='distance')
+    estimator = KNeighborsClassifier(n_neighbors=1,weights='distance')
     return estimator
 
 def Forest():
-    estimator = RandomForestClassifier(n_estimators=500, criterion='entropy')
+    estimator = RandomForestClassifier(n_estimators=10, criterion='entropy')
     return estimator
 
 def XGBoost():
@@ -32,7 +32,7 @@ def XGBoost():
     return estimator
 
 def SVM():
-    estimator = SVC(kernel='linear',C = 1)
+    estimator = SVC(kernel='linear',C = 100,gamma=100)
     return estimator
 
 switcher = {

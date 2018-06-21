@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from scipy import interp
 from sklearn.metrics import confusion_matrix
@@ -8,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_curve, auc
 
 def Classify(X,Y,estimator):
-    folds = 100
+    folds = 3
     sensibility = []
     specificity = []
     accuracy = []
@@ -46,11 +47,25 @@ def Classify(X,Y,estimator):
       accuracy.append((cm[0,0]+cm[1,1])/np.sum(cm))      
       precision.append(cm[1,1]/(cm[1,1]+cm[0,1]))
     
+    plot_ROC(tprs,mean_fpr,aucs)
+    plot_measures(sensibility,specificity,accuracy,precision)
+    
+    
+    sensibility = '{}+-{}'.format(np.around(np.mean(sensibility),decimals=3),np.around(np.std(sensibility),decimals=3))
+    specificity = '{}+-{}'.format(np.around(np.mean(specificity),decimals=3),np.around(np.std(specificity),decimals=3))
+    error = 1 - np.around(np.mean(accuracy),decimals=5)
+    accuracy = '{}+-{}'.format(np.around(np.mean(accuracy),decimals=3),np.around(np.std(accuracy),decimals=3))
+    precision = '{}+-{}'.format(np.around(np.mean(precision),decimals=3),np.around(np.std(precision),decimals=3))
+    results = [sensibility,specificity,accuracy,error,precision]
+    
+    return results
+
+def plot_ROC(tprs,mean_fpr,aucs):
     mean_tpr = np.mean(tprs, axis=0)
     mean_tpr[-1] = 1.0
     mean_auc = auc(mean_fpr, mean_tpr)
     std_auc = np.std(aucs)
-    #plt.subplots(figsize=(8,10))
+    plt.subplots(figsize=(8,8))
     plt.plot(mean_fpr, mean_tpr, color='b',
              label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc),
              lw=2, alpha=.8)
@@ -69,11 +84,49 @@ def Classify(X,Y,estimator):
     plt.legend(loc="lower right")
     plt.show()
     
-    sensibility = '{}+-{}'.format(np.around(np.mean(sensibility),decimals=3),np.around(np.std(sensibility),decimals=3))
-    specificity = '{}+-{}'.format(np.around(np.mean(specificity),decimals=3),np.around(np.std(specificity),decimals=3))
-    error = 1 - np.around(np.mean(accuracy),decimals=5)
-    accuracy = '{}+-{}'.format(np.around(np.mean(accuracy),decimals=3),np.around(np.std(accuracy),decimals=3))
-    precision = '{}+-{}'.format(np.around(np.mean(precision),decimals=3),np.around(np.std(precision),decimals=3))
-    results = [sensibility,specificity,accuracy,error,precision]
+    plt.savefig('Images/logistic_ROC.png', dpi=120)
     
-    return results
+def plot_measures(sensibility,specificity,accuracy,precision):
+    
+    sensibility = np.around(sensibility,decimals=5)
+    specificity = np.around(specificity,decimals=5)
+    accuracy = np.around(accuracy,decimals=5)
+    precision = np.around(precision,decimals=5)
+        
+    means = (np.mean(sensibility),np.mean(specificity),np.mean(accuracy),
+            np.mean(precision))
+    stds = (np.std(sensibility),np.std(specificity),np.std(accuracy),
+            np.std(precision))
+    maxs = (np.max(sensibility),np.max(specificity),np.max(accuracy),
+            np.max(precision))
+        
+    ind = np.arange(len(means))  # the x locations for the groups
+    width = 0.35  # the width of the bars
+
+    fig, ax = plt.subplots(figsize=(8,8))
+    rects1 = ax.bar(ind - width/2, means, width, yerr=stds,
+                    color='SkyBlue', label='Mean')
+    rects2 = ax.bar(ind + width/2, maxs, width, color='IndianRed', 
+                    label='Maximum')
+    
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    ax.set_ylabel('Percentage')
+    ax.set_title('Measures of error')
+    ax.set_xticks(ind)
+    ax.set_xticklabels(('Sensibility', 'Specificity', 'Accuracy', 'Precision'))
+    ax.legend()
+    
+    autolabel(rects1,ax, "left")
+    autolabel(rects2,ax, "right")
+    
+    plt.show()
+    
+def autolabel(rects, ax,xpos='center'):
+    xpos = xpos.lower()  # normalize the case of the parameter
+    ha = {'center': 'center', 'right': 'left', 'left': 'right'}
+    offset = {'center': 0.5, 'right': 0.57, 'left': 0.43}  # x_txt = x + w*off
+
+    for rect in rects:
+        height = rect.get_height()
+        ax.text(rect.get_x() + rect.get_width()*offset[xpos], 1.01*height,
+                '{0:.2f}'.format(height), ha=ha[xpos], va='bottom')    

@@ -8,7 +8,6 @@ def LinearModel(X,Y,estimator):
     X = poly.fit_transform(X)
     
     model = Selector(estimator)
-    print(model)
     results = Classify(X,Y,model)
     
     return results
