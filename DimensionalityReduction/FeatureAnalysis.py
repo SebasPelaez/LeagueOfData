@@ -5,8 +5,8 @@ import numpy as np
 def Pearson(X,Y):
     pearson_coef = np.corrcoef(X,Y,rowvar=False)
     
-    plt.subplots(figsize=(15,10))
-    ax1 = sns.heatmap(pearson_coef,cmap=plt.cm.jet,annot=True)    
+    plt.subplots(figsize=(15,12))
+    ax1 = sns.heatmap(pearson_coef,cmap=plt.cm.jet,annot=False)    
     
 def Fisher(X,Y,data_columns):
     ind_lose = Y == 0
@@ -31,9 +31,9 @@ def Fisher(X,Y,data_columns):
             
     coefN = coef /np.max(coef)
     plt.subplots(figsize=(15,10))
-    plt.xlabel('Diferencia de Muertes')
-    plt.ylabel('Número de Partidas')
-    plt.title('Diferencia de Muertes por Partida')
+    plt.xlabel('Caracteristicas')
+    plt.ylabel('Capacidad Discriminate')
+    plt.title('Indice de Fisher Normalizado')
     n = np.arange(32)
     for i in n:
         col = 'blue' if coefN[0,i]>0.4 else 'lightgreen'

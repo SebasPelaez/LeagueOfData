@@ -4,6 +4,8 @@ from sklearn.neighbors import KernelDensity
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 
+from VisualizeData.VisualizeMeasures import plot_measures
+
 def ParzenWindow(X,Y):
     folds = 100
     sensibility = []
@@ -35,6 +37,8 @@ def ParzenWindow(X,Y):
       accuracy.append((cm[0,0]+cm[1,1])/np.sum(cm))
       precision.append(cm[1,1]/(cm[1,1]+cm[0,1]))
       
+    plot_measures(sensibility,specificity,accuracy,precision)
+    
     sensibility = '{}+-{}'.format(np.around(np.mean(sensibility),decimals=3),np.around(np.std(sensibility),decimals=3))
     specificity = '{}+-{}'.format(np.around(np.mean(specificity),decimals=3),np.around(np.std(specificity),decimals=3))
     error = 1 - np.around(np.mean(accuracy),decimals=5)
@@ -45,7 +49,7 @@ def ParzenWindow(X,Y):
     return results
 
 def estimate(X_train,X_test):
-    width = 0.1
+    width = 1
     estimator = KernelDensity(bandwidth=width,kernel='gaussian', algorithm='ball_tree')
     estimator.fit(X_train)
     # Predecir los resultados de prueba

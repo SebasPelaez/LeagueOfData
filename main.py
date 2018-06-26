@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from DataPreprocessing.InfoExtract import ExtractData
 from DataPreprocessing.ExtractLPL import ExtractLeague
@@ -80,5 +81,42 @@ results = deepNN(X,Y)
 Pearson(X,Y)
 Fisher(X,Y,data_columns)
 
-X_sel = FeatureSelector(X,Y,'forest')#forest,knn,mlp,svm,regression
+#Feature Selection
+FeatureSelector(X,Y,'svm')
+
+X_sel = [0, 1, 2, 4, 6, 10, 11, 12, 15, 16, 17, 18, 22, 23, 24, 25, 26, 27, 29,
+         0, 1, 2, 4, 5, 8, 10, 13, 15, 17, 19, 22, 24, 28, 29, 0, 1, 2, 5, 6, 8,
+         9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 
+         28, 29, 30, 31, 0, 2, 3, 5, 8, 10, 12, 15, 16, 17, 19, 21, 22, 23, 24, 
+         25, 26, 27, 28, 30, 2, 3, 11, 12, 14, 15, 18, 19,2, 16, 18, 25,1, 2, 3,
+         5, 6, 8, 9, 10, 12, 14, 16, 17, 18, 19, 20, 22, 24, 25, 26, 27, 29
+        ]
+unique_elements, counts_elements = np.unique(X_sel, return_counts=True)
+features = []
+plt.subplots(figsize=(12,7))
+plt.xlabel('Features')
+plt.ylabel('Count')
+plt.title('Number of time for Features')
+n = np.arange(len(unique_elements))
+for i,j in zip(unique_elements, counts_elements):
+    plt.bar(i,j)
+    features.append(data_columns[i])
+plt.xticks(unique_elements,features,rotation=90)
+plt.show()
+
+X_sel_idx = [0,1,2,5,8,10,12,15,16,17,18,19,22,24,25,26,27,29]
+#X_sel_idx = [0,1,2,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,25,26,27,28,29,30,31]
+X_sel = X[:,X_sel_idx]
+
+# Execute Forecast
+results = RandomForest(X_sel,Y,'forest')
+results = ParzenWindow(X_sel,Y)
+results = KNN(X_sel,Y,'knn')
+results = MLP(X_sel,Y,'mlp')
+results = SVM(X_sel,Y,'svm')
+results = LinearModel(X_sel,Y,'regression')
+results = TreeBoosting(X_sel,Y,'xgboost')
+results = deepNN(X_sel,Y)
+
+
 X_ext = FeatureExtraction(X,Y)
