@@ -9,7 +9,7 @@ from sklearn.metrics import roc_curve, auc
 from VisualizeData.VisualizeMeasures import plot_measures,plot_ROC
 
 def Classify(X,Y,estimator):
-    folds = 10
+    folds = 100
     sensibility = []
     specificity = []
     accuracy = []

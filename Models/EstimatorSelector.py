@@ -20,7 +20,7 @@ def MLP():
     return estimator
 
 def KNN():
-    estimator = KNeighborsClassifier(n_neighbors=5,weights='distance')
+    estimator = KNeighborsClassifier(n_neighbors=10,weights='distance')
     return estimator
 
 def Forest():

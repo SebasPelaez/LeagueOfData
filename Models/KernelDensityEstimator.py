@@ -49,7 +49,7 @@ def ParzenWindow(X,Y):
     return results
 
 def estimate(X_train,X_test):
-    width = 1
+    width = 0.5
     estimator = KernelDensity(bandwidth=width,kernel='gaussian', algorithm='ball_tree')
     estimator.fit(X_train)
     # Predecir los resultados de prueba
