@@ -32,7 +32,7 @@ def XGBoost():
     return estimator
 
 def SVM():
-    estimator = SVC(kernel='linear',C = 1,gamma=10,probability=True)
+    estimator = SVC(kernel='linear',C = 0.01,probability=True)
     return estimator
 
 switcher = {

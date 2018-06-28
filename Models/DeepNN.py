@@ -20,7 +20,7 @@ def deepNN(X,Y):
     # Compile model
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     
-    model.add(Dense(32, input_dim=32, kernel_initializer='uniform', activation='relu'))
+    model.add(Dense(32, input_dim=28, kernel_initializer='uniform', activation='relu'))
     model.add(Dense(28, kernel_initializer='uniform', activation='relu'))
     model.add(Dense(24, kernel_initializer='uniform', activation='relu'))
     model.add(Dense(20, kernel_initializer='uniform', activation='relu'))
