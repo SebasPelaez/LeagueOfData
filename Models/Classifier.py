@@ -22,7 +22,7 @@ def Classify(X,Y,estimator):
     
     for i in range(0,folds):
       X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
-      print(i)
+      
       #Normalización de los datos
       sc_X = StandardScaler()
       X_train = sc_X.fit_transform(X_train)
@@ -41,6 +41,8 @@ def Classify(X,Y,estimator):
       tprs[-1][0] = 0.0
       roc_auc = auc(fpr, tpr)
       aucs.append(roc_auc)
+      
+      print(cm)
      
       sensibility.append(cm[1,1]/(cm[1,1]+cm[1,0]))
       specificity.append(cm[0,0]/(cm[0,0]+cm[0,1]))

@@ -1,6 +1,6 @@
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 from mlxtend.plotting import plot_sequential_feature_selection as plot_sfs
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
@@ -28,6 +28,7 @@ def FeatureSelector(X,Y,estimator):
     
     return sfs.k_feature_idx_
 
-def FeatureExtraction(X,Y):
-    lda = LinearDiscriminantAnalysis()
-    return lda.fit(X, Y).transform(X)
+def FeatureExtraction(X):
+    pca = PCA(n_components=5)
+    X_pca = pca.fit_transform(X)
+    return X_pca 
