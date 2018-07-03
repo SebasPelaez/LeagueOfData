@@ -18,7 +18,7 @@ from Models.LinearRegression import LinearModel
 from Models.TreeBoosting import TreeBoosting
 from Models.DeepNN import deepNN
 
-from DimensionalityReduction.FeatureAnalysis import Pearson, Fisher,ComponentAnalysis
+from DimensionalityReduction.FeatureAnalysis import Pearson, Fisher,ReductionAnalysis
 from DimensionalityReduction.FeatureSubset import FeatureSelector,FeatureExtraction
 
 data_columns = ['matches_played','percentage_blue_win','percentage_red_win',
@@ -118,9 +118,10 @@ results = LinearModel(X_sel,Y,'regression')
 results = TreeBoosting(X_sel,Y,'xgboost')
 results = deepNN(X_sel,Y)
 
-ComponentAnalysis(X)
+#Feature Extraction
+ReductionAnalysis(X,Y,'lda')
 
-X_ext = FeatureExtraction(X)
+X_ext = FeatureExtraction(X,Y,'pca')
 results = LinearModel(X_ext,Y,'regression')
 results = RandomForest(X_ext,Y,'forest')
 results = TreeBoosting(X_ext,Y,'xgboost')

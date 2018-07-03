@@ -42,7 +42,7 @@ def Classify(X,Y,estimator):
       roc_auc = auc(fpr, tpr)
       aucs.append(roc_auc)
       
-      print(cm)
+      print(i)
      
       sensibility.append(cm[1,1]/(cm[1,1]+cm[1,0]))
       specificity.append(cm[0,0]/(cm[0,0]+cm[0,1]))

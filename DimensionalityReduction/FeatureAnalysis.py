@@ -2,6 +2,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.decomposition import PCA
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 def Pearson(X,Y):
     pearson_coef = np.corrcoef(X,Y,rowvar=False)
@@ -42,19 +43,24 @@ def Fisher(X,Y,data_columns):
     plt.xticks(n,data_columns,rotation=90)
     plt.plot([0, 32], [0.4, 0.4], color='red', linestyle='-', linewidth=3)
     plt.show()
-    
-def ComponentAnalysis(X):
-    pca = PCA(n_components=32)
-    X = pca.fit_transform(X)
-    variance = np.zeros(pca.n_components_)
+        
+def ReductionAnalysis(X,Y,sw):
+    components = 32
+    if sw == 'pca':
+        reduction = PCA(n_components=components)
+        X = reduction.fit_transform(X)
+    else:
+        if sw == 'lda':
+            reduction = LinearDiscriminantAnalysis(n_components=components)
+            X = reduction.fit_transform(X,Y)
+    variance = np.zeros(components)
     k = 0
     c_max = -1
-    for i in pca.explained_variance_ratio_:
+    for i in reduction.explained_variance_ratio_:
         if k == 0 :
             variance[k] = i
         else:
             variance[k] = variance[k-1] + i
-        
         if(variance[k]>0.99 and c_max==-1):
             c_max = k
         k = k + 1
